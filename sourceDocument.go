@@ -2,11 +2,10 @@ package guerillaRadio
 
 import "bufio"
 import "os"
-import "fmt"
 
 type SourceDocument struct {
 	FileName string
-	Lines []string
+	Lines    []string
 }
 
 func (source *SourceDocument) ReadFile() (err error) {
@@ -15,15 +14,10 @@ func (source *SourceDocument) ReadFile() (err error) {
 	for err == nil {
 		line, err := reader.ReadString('\n')
 		source.Lines = append(source.Lines, line)
-		if err == nil { break }
-	}
-	
-	if err != nil {
-		fmt.Sprintf("ERROR: ReadFile encountered: %v", err)
-		return
+		if err == nil {
+			break
+		}
 	}
 
 	return
 }
-
-

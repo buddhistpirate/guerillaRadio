@@ -3,8 +3,8 @@ package guerillaRadio
 import "testing"
 
 func TestReadFile(t *testing.T) {
-	source := SourceDocument{ FileName: "fixtures/oneline.txt"}
-	source.ReadFile()
+	source := SourceDocument{FileName: "fixtures/oneline.txt"}
+	err := source.ReadFile()
 
 	length := len(source.Lines)
 	expected_length := 1
@@ -17,5 +17,23 @@ func TestReadFile(t *testing.T) {
 
 	if expected != string(actual) {
 		t.Errorf("expected '%v' , read '%v'", expected, actual)
+	}
+	
+	if err != nil {
+		t.Errorf("ReadFile had an unexpcted err %v", err)
+	}
+}
+
+func TestNoFileToRead(t *testing.T) {
+	source := SourceDocument{FileName: "/noway/this/works"}
+	err := source.ReadFile()
+
+	if err == nil {
+		t.Errorf("Error not returned for fake File")
+	}
+
+	expected_size := 0
+	if expected_size != len(source.Lines) {
+		t.Errorf("Expected to Slice to be empty")
 	}
 }
