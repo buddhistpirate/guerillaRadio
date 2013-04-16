@@ -1,15 +1,29 @@
 package guerillaRadio
 
-import "io/ioutil"
+import "bufio"
+import "os"
+import "fmt"
 
 type SourceDocument struct {
 	FileName string
-	Lines []byte
+	Lines []string
 }
 
 func (source *SourceDocument) ReadFile() (err error) {
- source.Lines , err = ioutil.ReadFile(source.FileName)
- return
+	file, err := os.Open(source.FileName)
+	reader := bufio.NewReader(file)
+	for err == nil {
+		line, err := reader.ReadString('\n')
+		source.Lines = append(source.Lines, line)
+		if err == nil { break }
+	}
+	
+	if err != nil {
+		fmt.Sprintf("ERROR: ReadFile encountered: %v", err)
+		return
+	}
+
+	return
 }
 
 
