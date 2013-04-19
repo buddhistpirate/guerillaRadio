@@ -1,4 +1,4 @@
-package guerillaRadio
+package guerillaradio
 
 import "bufio"
 import "os"
