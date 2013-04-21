@@ -1,6 +1,7 @@
 package guerillaradio
 
 import "testing"
+import "math/rand"
 
 func TestReadFile(t *testing.T) {
 	source := SourceDocument{FileName: "fixtures/oneline.txt"}
@@ -79,6 +80,7 @@ func TestRetrievesOnlyOneLine(t *testing.T) {
 
 func TestRetrieveMultipleLines(t *testing.T) {
 
+	rand.Seed(1)
 	source := SourceDocument{FileName: "fixtures/sixlines.txt"}
 	err := source.ReadFile()
 
