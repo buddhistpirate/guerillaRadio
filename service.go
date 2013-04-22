@@ -27,27 +27,27 @@ func handleConnection(library *Library,conn net.Conn) {
 		request, err := reader.ReadString('\n')
 
 		if err != nil {
-			fmt.Println("Error Reading from connection ", err)
+			fmt.Printf("Error Reading from connection %v\n", err)
 			break
 		}
 
 		num_lines, err := convertRequestToInt(request)
 		if err != nil {
-			fmt.Println("Error parsing Int ", err)
+			fmt.Printf("Error parsing Int %v\n", err)
 			//TODO: Return Some sort of error back to the socket
 			continue
 		}
 
 		json_bytes, err := ServiceRequest(library, num_lines)
 		if err != nil {
-			fmt.Println("Error Receiving JSON ", err)
+			fmt.Printf("Error Receiving JSON %v\n", err)
 			//TODO: Return some sort of error back to the socket
 			continue
 		}
 
 		_, err = conn.Write(json_bytes)
 		if err != nil {
-			fmt.Println("Error Writing JSON ", err)
+			fmt.Printf("Error Writing JSON %v\n", err)
 		}
 
 	}
@@ -57,15 +57,18 @@ func handleConnection(library *Library,conn net.Conn) {
 func Listen(library *Library, network_interface string) {
 	listener, err := net.Listen("tcp", network_interface)
 	if err != nil {
-		fmt.Println("Error Listening on ", network_interface)
+		fmt.Printf("Error Listening on %v: %v\n", network_interface, err)
 		os.Exit(1)
 	}
+
+	fmt.Printf("Listening on %v\n", network_interface)
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			fmt.Println("Error accepting request ", err)
+			fmt.Printf("Error accepting request %v\n", err)
 			continue
 		}
+		fmt.Printf("Accepted Request from: %v\n",conn.RemoteAddr())
 		go handleConnection(library,conn)
 	}
 }
