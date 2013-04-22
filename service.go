@@ -44,15 +44,25 @@ func handleConnection(library *Library,conn net.Conn) {
 			//TODO: Return some sort of error back to the socket
 			continue
 		}
-
+		json_bytes = appendNewLine(json_bytes)
 		_, err = conn.Write(json_bytes)
 		if err != nil {
 			fmt.Printf("Error Writing JSON %v\n", err)
 		}
+		fmt.Printf("Wrote %v bytes\n", len(json_bytes))
 
 	}
 	conn.Close()
 }
+
+func appendNewLine(jsonbytes []byte) (newlined []byte) {
+	newline := []byte("\n")
+	newlined = make([]byte,len(jsonbytes) + len(newline))
+	copy(newlined,jsonbytes)
+	copy(newlined[len(jsonbytes):],newline)
+	return
+}
+
 
 func Listen(library *Library, network_interface string) {
 	listener, err := net.Listen("tcp", network_interface)
