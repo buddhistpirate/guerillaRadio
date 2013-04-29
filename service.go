@@ -49,7 +49,7 @@ func handleConnection(library *Library,conn net.Conn) {
 		if err != nil {
 			fmt.Printf("Error Writing JSON %v\n", err)
 		}
-		fmt.Printf("Wrote %v bytes\n", len(json_bytes))
+		//fmt.Printf("Wrote %v bytes\n", len(json_bytes))
 
 	}
 	conn.Close()
